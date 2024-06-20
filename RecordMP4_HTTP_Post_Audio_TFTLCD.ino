@@ -1,7 +1,6 @@
 /*
  Example guide:
- 1. To run Server on PC:
-    cd ~/Arduino/examples/AMB82-MINI/src
+ 1. To run Server on PC with GPU:
     python AmebaPro2_Whisper_LLM_server.py
     
  2. To run client on AMB82-mini:   
