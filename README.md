@@ -69,6 +69,24 @@ async def post_audio(data: Base64Data):
 
 ### Client
 **Code:** [RecordMP4_HTTP_Post_Audio_TFTLCD.ino](https://github.com/rkuo2000/portable-ChatGPT/blob/main/RecordMP4_HTTP_Post_Audio_TFTLCD.ino)<br>
+```
+#define TFT_RESET 5
+#define TFT_DC    4
+#define TFT_CS    SPI_SS
+
+AmebaILI9341 tft = AmebaILI9341(TFT_CS, TFT_DC, TFT_RESET);
+
+#define ILI9341_SPI_FREQUENCY 20000000
+
+#define FILENAME "TestRecordingAudioOnly.mp4"
+
+char ssid[] = "Your SSID";    // your network SSID (Home WiFi or Smartphone Hotspot)
+char pass[] = "Your Password";        // your network password
+int status = WL_IDLE_STATUS;
+
+char server[] = "123.195.32.57";   // the server IP running HTTP server on PC
+#define PORT 5000
+```
 
 ---
 ## Demo Video
