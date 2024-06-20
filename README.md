@@ -27,10 +27,50 @@
 * [Amebapro2 AMB82-mini Arduino getting started](https://www.amebaiot.com/en/amebapro2-amb82-mini-arduino-getting-started/)
 
 ---
-### System Diagram
+## System Diagram
 <p><img width="50%" height="50%" src="https://github.com/rkuo2000/portable-ChatGPT/blob/main/assets/Portable-ChatGPT_System_Diagram.png?raw=true"></p>
 
 ---
-### Demo Video
+## Implementation
+### Server: 
+model_name = "microsoft/Phi-3-mini-128k-instruct"<br>
+**Code:** [AmebaPro2_Whisper_LLM_server.py](https://github.com/rkuo2000/portable-ChatGPT/blob/main/AmebaPro2_Whisper_LLM_server.py)<br>
+'''
+@app.post("/audio")
+async def post_audio(data: Base64Data):
+    try:
+        #Decode the base64 string
+        decoded_data = base64.b64decode(data.base64_string)
+        
+        # print(decoded_data)
+        #Save the decoded data to an MP4 file
+        with open("output.mp4", "wb") as f:
+            f.write(decoded_data)
+      
+        # Whisper transcribe
+        result = ASR.transcribe("output.mp4",fp16=False)
+        header1 = "ASR: "
+        print(header1+result["text"])
+
+        # LLM generate
+        prompt = result["text"]
+        input_ids = tokenizer.encode(prompt, return_tensors="pt").to("cuda")
+        output = LLM.generate(input_ids, max_length=128, num_beams=5, no_repeat_ngram_size=2, pad_token_id=tokenizer.eos_token_id, do_sample=True)
+        generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
+        header2="LLM: "
+        print(header2+generated_text) 
+        #return Response(header2+generated_text)
+        textout = generated_text.split("</s>")[-1] # for Phi-3
+        return Response(header2+textout)
+        return Response(header2+textout)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+'''
+
+### Client
+**Code:** [RecordMP4_HTTP_Post_Audio_TFTLCD.ino](https://github.com/rkuo2000/portable-ChatGPT/blob/main/RecordMP4_HTTP_Post_Audio_TFTLCD.ino)<br>
+
+---
+## Demo Video
 [![](https://markdown-videos-api.jorgenkh.no/youtube/7rfmXPqyLF0)](https://youtu.be/7rfmXPqyLF0)
 
