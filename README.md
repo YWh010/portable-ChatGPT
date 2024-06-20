@@ -35,7 +35,7 @@
 ### Server: 
 model_name = "microsoft/Phi-3-mini-128k-instruct"<br>
 **Code:** [AmebaPro2_Whisper_LLM_server.py](https://github.com/rkuo2000/portable-ChatGPT/blob/main/AmebaPro2_Whisper_LLM_server.py)<br>
-'''
+```
 @app.post("/audio")
 async def post_audio(data: Base64Data):
     try:
@@ -65,7 +65,7 @@ async def post_audio(data: Base64Data):
         return Response(header2+textout)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-'''
+```
 
 ### Client
 **Code:** [RecordMP4_HTTP_Post_Audio_TFTLCD.ino](https://github.com/rkuo2000/portable-ChatGPT/blob/main/RecordMP4_HTTP_Post_Audio_TFTLCD.ino)<br>
